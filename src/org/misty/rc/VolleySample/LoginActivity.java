@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,8 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import org.misty.rc.VolleySample.models.Auth;
@@ -38,10 +35,11 @@ public class LoginActivity extends Activity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //debug
-        preferences.edit().remove(Auth.TOKEN).commit();
+        removePref();
 
         if(TextUtils.isEmpty(preferences.getString(Auth.TOKEN, null))) {
             setContentView(R.layout.login);
+            getActionBar().hide();
 
             Button button = (Button)findViewById(R.id.login_button);
             button.setOnClickListener(loginClick);
@@ -50,6 +48,13 @@ public class LoginActivity extends Activity {
             //still login
             changeActivity();
         }
+    }
+
+    private void removePref() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(Auth.URL_NAME);
+        editor.remove(Auth.TOKEN);
+        editor.commit();
     }
 
     private View.OnClickListener loginClick = new View.OnClickListener() {
@@ -62,14 +67,10 @@ public class LoginActivity extends Activity {
             String url_name = ((EditText)findViewById(R.id.url_name)).getText().toString();
             String password = ((EditText)findViewById(R.id.password)).getText().toString();
 
-            Map<String, String> params = new HashMap<String, String>();
-            params.put(Auth.URL_NAME, url_name);
-            params.put(Auth.PASSWORD, password);
-
             GsonRequest request = GsonRequest.POST(
-                    "https://qiita.com/api/v1/auth",
+                    QiitaAPI.getToken(),
                     Auth.class,
-                    params,
+                    QiitaAPI.getTokenParams(url_name, password),
                     authListener,
                     errorListener
             );
@@ -82,8 +83,13 @@ public class LoginActivity extends Activity {
         @Override
         public void onResponse(Auth auth) {
             String token = auth.token;
+            String url_name = auth.url_name;
 
-            preferences.edit().putString(Auth.TOKEN, token).commit();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Auth.TOKEN, token);
+            editor.putString(Auth.URL_NAME, url_name);
+            editor.commit();
+
             changeActivity();
         }
     };
@@ -96,7 +102,7 @@ public class LoginActivity extends Activity {
     };
 
     private void changeActivity() {
-        Intent i = new Intent(getApplication(), VolleySampleActivity.class);
+        Intent i = new Intent(getApplication(), MainActivity.class);
         startActivity(i);
 
         LoginActivity.this.finish();

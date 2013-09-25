@@ -16,6 +16,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#111"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,12 +26,10 @@
                 android:layout_gravity="start"
                 android:orientation="horizontal">
 
-            <ImageView
-                    android:id="@+id/profile_icon"
-                    android:layout_height="48dp"
-                    android:layout_width="48dp"
-                    android:layout_gravity="start"
-                    android:contentDescription="profile image"/>
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/profile_icon"
+                android:layout_height="48dp"
+                android:layout_width="48dp"/>
 
             <TextView
                     android:id="@+id/profile_name"

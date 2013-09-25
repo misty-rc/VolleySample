@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_initial"
+        android:key="pref_key_initial_settings">
+
+        <ListPreference
+            android:key="@string/pref_initial_view"
+            android:title="@string/pref_initial_view_title"
+            android:dialogTitle="@string/pref_initial_view_dialogTitle"
+            android:entries="@array/pref_initial_select_fragment"
+            android:entryValues="@array/pref_initial_select_fragment"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VolleySample</string>
+    <string name="setting">Setting</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_preference">Setting</string>
+    <string name="pref_initial">Initialized</string>
+
+    <array name="pref_initial_select_fragment">
+        <item>stocks</item>
+        <item>own post</item>
+        <item>public</item>
+    </array>
+
+    <string name="pref_initial_view">pref_initial_view</string>
+    <string name="pref_initial_view_title">Initial View Content</string>
+    <string name="pref_initial_view_dialogTitle">Choose initial Content</string>
 </resources>
